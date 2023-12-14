@@ -21,17 +21,21 @@ const app = express();
 // open ai
 const OpenAI = require("openai");
 const openai = new OpenAI();
+openai.api_key = process.env.OPENAI_API_KEY;
 
-async function main() {
+async function main(a) {
   const completion = await openai.chat.completions.create({
-    messages: [{ role: "system", content: "You are a helpful assistant." }],
+    messages: [
+      { role: "system", content: "You are a helpful assistant." },
+      { role: "user", content: a },
+    ],
     model: "gpt-3.5-turbo",
   });
 
   console.log(completion.choices[0]);
 }
 
-main();
+//main("Who won the world series in 2020?");
 // open ai
 
 // register a webhook handler with middleware
@@ -58,7 +62,7 @@ function handleEvent(event) {
   // use reply API
   return client.replyMessage({
     replyToken: event.replyToken,
-    messages: [echo],
+    messages: main(echo.text),
   });
 }
 
