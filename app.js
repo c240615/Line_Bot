@@ -23,19 +23,16 @@ const OpenAI = require("openai");
 const openai = new OpenAI();
 openai.api_key = process.env.OPENAI_API_KEY;
 
-async function main(a) {
+async function main(event) {
   const completion = await openai.chat.completions.create({
     messages: [
-      { role: "system", content: "You are a helpful assistant." },
-      { role: "user", content: a },
+      { role: "system", content: "你好，我是機器人" },
+      { role: "user", content: event },
     ],
     model: "gpt-3.5-turbo",
   });
-
   console.log(completion.choices[0]);
 }
-
-//main("Who won the world series in 2020?");
 // open ai
 
 // register a webhook handler with middleware
@@ -57,15 +54,17 @@ function handleEvent(event) {
   }
 
   // create an echoing text message
-  const echo = { type: "text", text: event.message.text };
-
+  const echo = {
+    type: "text",
+    text: main(event.message.text.trim()) || "抱歉，我沒有話可說了。",
+  };
+  // event.message.text
   // use reply API
   return client.replyMessage({
     replyToken: event.replyToken,
-    messages: main(echo.text),
+    messages: [echo],
   });
 }
-
 // listen on port
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
