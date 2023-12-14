@@ -43,21 +43,20 @@ async function handleEvent(event) {
   const response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [
+      { role: "system", content: "You are a helpful assistant." },
       {
         role: "user",
         content: event.message.text,
       },
     ],
-    max_tokens: 500,
   });
 
   // create an echoing text message
   const [choices] = response.choices;
   const echo = {
     type: "text",
-    text: choices.message.content.trim() || "抱歉，我無法回答。",
+    text: choices.message.content || "抱歉，我無法回答。",
   };
-  //const echo = { type: "text", text: event.message.text };
 
   // use reply API
   return client.replyMessage({
@@ -71,35 +70,3 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`listening on ${port}`);
 });
-/*// event handler
-async function handleEvent(event) {
-  if (event.type !== "message" || event.message.type !== "text") {
-    // ignore non-text-message event
-    return Promise.resolve(null);
-  }
-
-  const { data } = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [
-      {
-        role: "user",
-        content: event.message.text,
-      },
-    ],
-    max_tokens: 500,
-  });
-
-  // create an echoing text message
-  const [choices] = data.choices;
-  const echo = {
-    type: "text",
-    text: choices.message.content.trim() || "抱歉，我沒有話可說了。",
-  };
-  //const echo = { type: "text", text: event.message.text };
-
-  // use reply API
-  return client.replyMessage({
-    replyToken: event.replyToken,
-    messages: [echo],
-  });
-}*/
