@@ -21,7 +21,7 @@ const app = express();
 // open ai
 const OpenAI = require("openai");
 const openai = new OpenAI();
-openai.api_key = process.env.OPENAI_API_KEY;
+//openai.api_key = process.env.OPENAI_API_KEY;
 
 async function main(event) {
   const completion = await openai.chat.completions.create({
@@ -31,7 +31,8 @@ async function main(event) {
     ],
     model: "gpt-3.5-turbo",
   });
-  console.log(completion.choices[0]);
+  //console.log(completion.choices[0]);
+  return completion.choices[0].message.content;
 }
 // open ai
 
@@ -58,13 +59,13 @@ function handleEvent(event) {
     type: "text",
     text: main(event.message.text.trim()) || "抱歉，我沒有話可說了。",
   };
-  // event.message.text
   // use reply API
   return client.replyMessage({
     replyToken: event.replyToken,
     messages: [echo],
   });
 }
+
 // listen on port
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
