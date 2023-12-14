@@ -17,9 +17,22 @@ const client = new line.messagingApi.MessagingApiClient({
 // create Express app
 // about Express itself: https://expressjs.com/
 const app = express();
-app.get("/",(req,res)=>{
-  res.send("123")
-})
+
+// open ai
+const { Configuration, OpenAIApi } = require("openai");
+//實例化;
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
+
+const completion = await openai.createCompletion({
+  model: "text-davinci-002",
+  prompt: "Hello world",
+});
+console.log(completion.data.choices[0].text);
+// open ai
+
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
 app.post("/callback", line.middleware(config), (req, res) => {
