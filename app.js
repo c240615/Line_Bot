@@ -1,4 +1,3 @@
-"use strict";
 require("dotenv").config();
 
 const line = require("@line/bot-sdk");
@@ -18,6 +17,22 @@ const client = new line.messagingApi.MessagingApiClient({
 // create Express app
 // about Express itself: https://expressjs.com/
 const app = express();
+
+// open ai
+const OpenAI = require("openai");
+const openai = new OpenAI();
+
+async function main() {
+  const completion = await openai.chat.completions.create({
+    messages: [{ role: "system", content: "You are a helpful assistant." }],
+    model: "gpt-3.5-turbo",
+  });
+
+  console.log(completion.choices[0]);
+}
+
+main();
+// open ai
 
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
