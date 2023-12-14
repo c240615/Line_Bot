@@ -1,7 +1,13 @@
-"use strict";
 require("dotenv").config();
-const line = require("@line/bot-sdk");
+
 const express = require("express");
+const line = require("@line/bot-sdk");
+const { Configuration, OpenAIApi } = require("openai");
+
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
 // create LINE SDK config from env variables
 const config = {
@@ -10,28 +16,11 @@ const config = {
 };
 
 // create LINE SDK client
-const client = new line.messagingApi.MessagingApiClient({
-  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
-});
+const client = new line.Client(config);
 
 // create Express app
 // about Express itself: https://expressjs.com/
 const app = express();
-
-// open ai
-const { Configuration, OpenAIApi } = require("openai");
-//實例化;
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
-
-const completion = await openai.createCompletion({
-  model: "text-davinci-002",
-  prompt: "Hello world",
-});
-console.log(completion.data.choices[0].text);
-// open ai
 
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
@@ -45,20 +34,32 @@ app.post("/callback", line.middleware(config), (req, res) => {
 });
 
 // event handler
-function handleEvent(event) {
+async function handleEvent(event) {
   if (event.type !== "message" || event.message.type !== "text") {
     // ignore non-text-message event
     return Promise.resolve(null);
   }
 
-  // create an echoing text message
-  const echo = { type: "text", text: event.message.text };
+  const { data } = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "user",
+        content: event.message.text,
+      },
+    ],
+    max_tokens: 500,
+  });
+
+  // create a echoing text message
+  const [choices] = data.choices;
+  const echo = {
+    type: "text",
+    text: choices.message.content.trim() || "抱歉，我沒有話可說了。",
+  };
 
   // use reply API
-  return client.replyMessage({
-    replyToken: event.replyToken,
-    messages: [echo],
-  });
+  return client.replyMessage(event.replyToken, echo);
 }
 
 // listen on port
