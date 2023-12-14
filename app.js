@@ -21,20 +21,6 @@ const app = express();
 // open ai
 const OpenAI = require("openai");
 const openai = new OpenAI();
-//openai.api_key = process.env.OPENAI_API_KEY;
-
-async function main(event) {
-  const completion = await openai.chat.completions.create({
-    messages: [
-      { role: "system", content: "你好，我是機器人" },
-      { role: "user", content: event },
-    ],
-    model: "gpt-3.5-turbo",
-  });
-  //console.log(completion.choices[0]);
-  return completion.choices[0].message.content;
-}
-// open ai
 
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
@@ -48,17 +34,31 @@ app.post("/callback", line.middleware(config), (req, res) => {
 });
 
 // event handler
-function handleEvent(event) {
+async function handleEvent(event) {
   if (event.type !== "message" || event.message.type !== "text") {
     // ignore non-text-message event
     return Promise.resolve(null);
   }
 
+  // open ai
+  const completion = await openai.chat.completions.create({
+    messages: [
+      { role: "system", content: "你好，我是機器人" },
+      { role: "user", content: event.message.text },
+    ],
+    model: "gpt-3.5-turbo",
+    max_tokens: 200,
+  });
+  // completion.choices[0].message.content;
+  // open ai
+
   // create an echoing text message
   const echo = {
     type: "text",
-    text: main(event.message.text.trim()) || "抱歉，我沒有話可說了。",
-  };
+    text:
+      completion.choices[0].message.content.trim() || "抱歉，我沒有話可說了。",
+  };  
+
   // use reply API
   return client.replyMessage({
     replyToken: event.replyToken,
@@ -71,3 +71,15 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`listening on ${port}`);
 });
+
+/*async function main(event) {
+    const completion = await openai.chat.completions.create({
+      messages: [
+        { role: "system", content: "你好，我是機器人" },
+        { role: "user", content: event },
+      ],
+      model: "gpt-3.5-turbo",
+      max_tokens: 200,
+    });
+    return completion.choices[0].message.content;
+  }*/
