@@ -2,9 +2,9 @@
 
 ## 功能
 
-![image](https://github.com/c240615/Line_Bot/public/line_bot.PNG)
+![image](public/line_bot.jpg)
 
-1. 可以通過 Line 和 ChatGPT 以文字對話，但因為串接的不是付費 API ，使用上有流量限制，此專案使用 gpt-3.5-turbo model
+# 可以通過 Line 和 ChatGPT 以文字對話，但因為串接的不是付費 API ，使用上有流量限制，此專案使用 gpt-3.5-turbo model
 
 流量限制參考資料 : 
 
@@ -27,16 +27,16 @@ https://openai.com/pricing
    npm install
    ```
 
-5. 開啟專案並依照 .env.example 設定相關變數
+5. 依照 .env.example 設定相關變數
 6. 部署專案後開啟 Line 搜尋 Channel ID 加入好友即可開始聊天
 
 
 ## 參考資料
 
-1. Line-bot-sdk
+# Line-bot-sdk
 https://github.com/line/line-bot-sdk-nodejs/blob/master/examples/echo-bot/index.js
 
-2. OpenAI
+# OpenAI
 https://platform.openai.com/docs/quickstart?context=node
 https://platform.openai.com/docs/guides/text-generation/chat-completions-api
 
