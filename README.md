@@ -1,10 +1,12 @@
 # Line_Bot 串接 OpenAI
 
-## 功能
+## Line 聊天介面
 
 ![image](public/line_bot.jpg)
 
-# 可以通過 Line 和 ChatGPT 以文字對話，但因為串接的不是付費 API ，使用上有流量限制，此專案使用 gpt-3.5-turbo model
+## 功能
+
+### 可以通過 Line 和 ChatGPT 以文字對話，但因為串接的不是付費 API ，使用上有流量限制，此專案使用 gpt-3.5-turbo model
 
 流量限制參考資料 : 
 
@@ -33,10 +35,10 @@ https://openai.com/pricing
 
 ## 參考資料
 
-# Line-bot-sdk
+### Line-bot-sdk
 https://github.com/line/line-bot-sdk-nodejs/blob/master/examples/echo-bot/index.js
 
-# OpenAI
+### OpenAI
 https://platform.openai.com/docs/quickstart?context=node
 https://platform.openai.com/docs/guides/text-generation/chat-completions-api
 
