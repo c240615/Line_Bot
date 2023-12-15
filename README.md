@@ -6,10 +6,10 @@
 
 ## 功能
 
-### 可以通過 Line 和 ChatGPT 以文字對話，但因為串接的不是付費 API ，使用上有流量限制
-### 此專案使用 gpt-3.5-turbo model
+1. 可以通過 Line 和 ChatGPT 以文字對話，但因為串接的不是付費 API ，使用上有流量限制
+2. 此專案使用 gpt-3.5-turbo model
 
-流量限制參考資料 : 
+3. 流量限制參考資料 : 
 
 https://platform.openai.com/docs/guides/rate-limits/rate-limits?context=tier-free
 
