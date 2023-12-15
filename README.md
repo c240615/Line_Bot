@@ -12,7 +12,7 @@
 
    https://platform.openai.com/docs/guides/rate-limits/rate-limits?context=tier-free
    
-   https://openai.com/pricing
+      https://openai.com/pricing
 
 ## 使用方式
 
