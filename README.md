@@ -32,6 +32,9 @@
 6. 部署專案後開啟 Line 搜尋 Channel ID 加入好友即可開始聊天
 
 
+## 實作紀錄
+[實作紀錄](https://medium.com/@claire210401/%E4%BB%A5-node-js-%E4%B8%B2%E6%8E%A5-open-ai-%E5%BB%BA%E7%AB%8B-line-%E8%81%8A%E5%A4%A9%E6%A9%9F%E5%99%A8%E4%BA%BA-%E4%BB%A5-gpt-3-5-turbo-model-%E7%82%BA%E4%BE%8B-586b73624632)
+
 ## 參考資料
 
 ### Line-bot-sdk
